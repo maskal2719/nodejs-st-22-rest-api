@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,13 +12,8 @@ export class UsersController {
     }
 
     @Get()
-    getAll() {
-        return this.usersService.getAll();
-    }
-
-    @Get()
-    getAutoSuggestUsers(@Query('loginSubstring') loginSubstring: string, @Query('limit') limit : number) {
-        return limit;
+    getAll(@Query('loginSubstring') loginSubstring: string, @Query('limit') limit: number) {
+        return this.usersService.getAll(loginSubstring, limit);
     }
 
     @Get(':id')
@@ -41,6 +35,4 @@ export class UsersController {
     update(@Body() updateUserDto : UpdateUserDto, @Param('id') id : string) {
         return this.usersService.update(id, updateUserDto);
     }
-
-
 }
