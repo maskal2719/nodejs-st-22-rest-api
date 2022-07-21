@@ -13,34 +13,27 @@ export class UsersController {
     }
 
     @Get()
-    getAll() {
-        return this.usersService.getAll()
-    }
-
-    @Get()
-    getAutoSuggestUsers(@Query('loginSubstring') loginSubstring: string, @Query('limit') limit : number) {
-        return limit
+    getAll(@Query('loginSubstring') loginSubstring: string, @Query('limit') limit: number) {
+        return this.usersService.getAll(loginSubstring, limit);
     }
 
     @Get(':id')
     getOne(@Param('id') id : string) {
-        return this.usersService.getOne(id)
+        return this.usersService.getOne(id);
     }
 
     @Post()
     create(@Body() createUserDto : CreateUserDto) {
-        return this.usersService.create(createUserDto)
+        return this.usersService.create(createUserDto);
     }
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        return this.usersService.remove(id)
+        return this.usersService.remove(id);
     }
 
     @Put(':id')
     update(@Body() updateUserDto : UpdateUserDto, @Param('id') id : string) {
-        return this.usersService.update(id, updateUserDto)
+        return this.usersService.update(id, updateUserDto);
     }
-
-
 }

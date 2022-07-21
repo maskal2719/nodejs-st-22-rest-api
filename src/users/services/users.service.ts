@@ -9,8 +9,18 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class UsersService {
     private users: User[] = [];
 
-    getAll() {
-        return this.users.filter(user => user.isDeleted === false);
+    getAll(loginSubstring?: string | undefined, limit?: number) {
+        console.log(loginSubstring);
+        
+        if (loginSubstring){
+            return this.users.filter((user) => user.login === loginSubstring && !user.isDeleted);
+        }
+        
+        if (limit){
+            return this.users.slice(0,limit);
+        }
+
+        return this.users.filter(user => !user.isDeleted);
     }
 
     getOne(id: string) {
