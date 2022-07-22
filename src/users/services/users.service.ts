@@ -13,18 +13,18 @@ export class UsersService {
         console.log(loginSubstring);
         
         if (loginSubstring){
-            return this.users.filter((user) => user.login === loginSubstring && !user.isDeleted);
+            return this.users.filter(user => !user.isDeleted && user.login.includes(loginSubstring))
         }
         
         if (limit){
-            return this.users.slice(0,limit);
+            return this.users.filter(user => !user.isDeleted).slice(0,limit);
         }
 
         return this.users.filter(user => !user.isDeleted);
     }
 
     getOne(id: string) {
-        return this.users.find(user => user.id === id && user.isDeleted === false);
+        return this.users.find(user => user.id === id && !user.isDeleted);
     }
 
     create(userDto: CreateUserDto) {
