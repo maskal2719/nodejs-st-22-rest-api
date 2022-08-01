@@ -1,60 +1,36 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from '../interfaces/user.interface';
-import { v4 as uuidv4 } from 'uuid';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from '../models/users.model';
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [];
 
-    getAll(loginSubstring?: string | undefined, limit?: number) {
-        console.log(loginSubstring);
-        
-        if (loginSubstring){
-            return this.users.filter(user => !user.isDeleted && user.login.includes(loginSubstring))
-        }
-        
-        if (limit){
-            return this.users.filter(user => !user.isDeleted).slice(0,limit);
-        }
+    constructor(@InjectModel(User) private userRepository: typeof User) {}
 
-        return this.users.filter(user => !user.isDeleted);
-    }
-
-    getOne(id: string) {
-        return this.users.find(user => user.id === id && !user.isDeleted);
-    }
-
-    create(userDto: CreateUserDto) {
-        if (this.isUnique(userDto.login)) {
-            throw new BadRequestException('User with this login already exists');
-        }
-        const user = {id: uuidv4(), ...userDto, isDeleted : false};
-        this.users.push(user);
+    async getOne(id: string) {
+        const user = await this.userRepository.findOne({where : {id, isDeleted: false}})
         return user;
     }
 
-    update(id: string, userDto: UpdateUserDto) {
-        const user = this.getOne(id);
-        
-        const newUser = {
-            ...user,
-            ...userDto
-        };
+    async remove(id: string) {
+        return await this.userRepository.update({isDeleted: true }, { where: { id }, returning: true});
+      }
 
-        const index = this.users.findIndex((user) => user.id === id);
-        this.users[index] = newUser;
+    async update(id: string, userDto: UpdateUserDto) {
+        const newUser = await this.userRepository.update(userDto, {where: { id }, returning: true});
         return newUser;
     }
 
-    remove(id: string) {
-        return this.getOne(id).isDeleted = true;
+    async createUser(dto: CreateUserDto) {
+        const user = await this.userRepository.create(dto)
+        return user;
     }
 
-    isUnique(login: string) {
-        return this.users.find((user) => user.login === login);
+    async getAllUsers() {
+        const users = await this.userRepository.findAll({where: {isDeleted: false}})
+        return users;
     }
-    
 }

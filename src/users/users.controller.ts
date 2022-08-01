@@ -8,12 +8,11 @@ import { UsersService } from './services/users.service';
 export class UsersController {
 
     constructor(private readonly usersService : UsersService) {
-
     }
-
+    
     @Get()
-    getAll(@Query('loginSubstring') loginSubstring: string, @Query('limit') limit: number) {
-        return this.usersService.getAll(loginSubstring, limit);
+    getAll() {
+        return this.usersService.getAllUsers();
     }
 
     @Get(':id')
@@ -23,7 +22,7 @@ export class UsersController {
     
     @Post()
     create(@Body() createUserDto : CreateUserDto) {
-        return this.usersService.create(createUserDto);
+        return this.usersService.createUser(createUserDto);
     }
 
     @Delete(':id')
