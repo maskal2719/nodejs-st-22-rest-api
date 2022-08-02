@@ -1,19 +1,12 @@
-/* eslint-disable prettier/prettier */
-import { Module } from "@nestjs/common";
-import { UsersService } from "./services/users.service";
-import { UsersController } from "./users.controller";
-import { SequelizeModule } from "@nestjs/sequelize";
-import { User } from "./models/users.model";
-
+import { Module } from '@nestjs/common';
+import { UsersService } from './services/users.service';
+import { UsersController } from './users.controller';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from './models/users.model';
 
 @Module({
-    providers: [UsersService],
-    controllers: [UsersController],
-    imports: [
-      SequelizeModule.forFeature([User])
-    ]
+  providers: [UsersService],
+  controllers: [UsersController],
+  imports: [SequelizeModule.forFeature([User])],
 })
-
-export class UsersModule {
-    
-}
+export class UsersModule {}

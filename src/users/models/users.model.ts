@@ -12,13 +12,13 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({ type: DataType.UUID, defaultValue: UUIDV4, primaryKey: true })
   id: string;
 
-  @Column({ type: DataType.STRING, unique: true})
+  @Column({ type: DataType.STRING, unique: true })
   login: string;
 
-  @Column({ type: DataType.STRING})
+  @Column({ type: DataType.STRING })
   password: string;
 
-  @Column({ type: DataType.INTEGER})
+  @Column({ type: DataType.INTEGER })
   age: number;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
