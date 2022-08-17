@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/users.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,7 @@ export class UsersService {
 
   async update(id: string, userDto: UpdateUserDto) {
     const newUser = await this.userRepository.update(userDto, {
-      where: { id },
+      where: { id, isDeleted: false },
       returning: true,
     });
     return newUser;
@@ -35,9 +36,16 @@ export class UsersService {
     return user;
   }
 
-  async getAllUsers() {
-    const users = await this.userRepository.findAll({
-      where: { isDeleted: false },
+  async getAllUsers(loginSubstring? : string, limit? : number) {
+    let users = await this.userRepository.findAll({
+      where: {
+        isDeleted: false,
+        login: {
+          [Op.iLike]: `%${loginSubstring}%`,
+        },
+      },
+      order: [['login', 'ASC']],
+      limit: limit
     });
     return users;
   }

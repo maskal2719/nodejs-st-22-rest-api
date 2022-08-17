@@ -17,7 +17,6 @@ import { ConfigModule } from '@nestjs/config';
       password: process.env.POSTGRESS_PASSWORD,
       database: process.env.POSTGRESS_DB,
       autoLoadModels: true,
-      models: [User],
     }),
     UsersModule,
   ],
