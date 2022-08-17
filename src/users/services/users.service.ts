@@ -36,19 +36,17 @@ export class UsersService {
     return user;
   }
 
-  async getAllUsers(loginSubstring, limit) {
-    const users = await this.userRepository.findAll({
+  async getAllUsers(loginSubstring? : string, limit? : number) {
+    let users = await this.userRepository.findAll({
       where: {
         isDeleted: false,
         login: {
-          [Op.substring]: loginSubstring,
+          [Op.iLike]: `%${loginSubstring}%`,
         },
       },
+      order: [['login', 'ASC']],
+      limit: limit
     });
-
-    if (limit) {
-      return users.slice(0, limit);
-    }
     return users;
   }
 }

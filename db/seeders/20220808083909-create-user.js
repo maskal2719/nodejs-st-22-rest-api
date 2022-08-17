@@ -6,7 +6,7 @@ module.exports = {
       {
         id: '8d1c1593-06a3-4b86-9a2d-66a00b7fd3b1',
         login: 'Moskalenko',
-        password: '1',
+        password: '123qwe',
         age: 26,
       },
     ]);

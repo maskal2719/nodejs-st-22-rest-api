@@ -19,10 +19,10 @@ export class UsersController {
 
   @Get()
   getAll(
-    @Query('loginSubstring') loginSubstring: string,
-    @Query('limit') limit: number,
+    @Query('loginSubstring') loginSubstring?: string,
+    @Query('limit') limit?: number,
   ) {
-    return this.usersService.getAllUsers(loginSubstring, limit);
+    return this.usersService.getAllUsers(loginSubstring || '', limit || 10);
   }
 
   @Get(':id')
